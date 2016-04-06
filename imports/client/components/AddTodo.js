@@ -1,22 +1,28 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import addTodo from '../../../imports/client/actions/addTodo';
-function AddTodo({ dispatch }) {
-  let input;
-  return (
-    <div>
-      <input ref={function (node)  {
-        input = node;
-      }}/>
-      <button onClick={function () {
-        console.log('YO');
-        dispatch(addTodo(input.value));
-        input.value = '';
-      }}>
-        Add Todo
-      </button>
-    </div>
-  );
+import React, { Component, PropTypes } from 'react';
+
+export default class AddTodo extends Component {
+
+  createTodo(event) {
+    event.preventDefault();
+    const todoText = this.refs.todoText.value.trim();
+    if(todoText){
+      debugger;
+      this.props.onAddTodo(todoText);
+    }
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.createTodo.bind(this)}>
+        <input ref='todoText'/>
+        <button type="submit">Add Todo</button>
+      </form>
+    );
+  }
 }
 
-export default connect()(AddTodo);
+AddTodo.propTypes = {
+  onAddTodo: PropTypes.func.isRequired
+};
+
+export default AddTodo;
